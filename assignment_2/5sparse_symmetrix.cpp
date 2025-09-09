@@ -15,8 +15,6 @@ int main()
     }
     int flag=0;
     int flag1=0;
-    int val=0;
-    int arr1[row*row-row];
     for(int i=0;i<row;i++)
     {
         for(int j=0;j<col;j++)
@@ -25,16 +23,15 @@ int main()
             {
                 cout<<arr[flag]<<"  ";
                 flag++;
+                flag1++;
             }
             else if(j<i)
             {
                 cout<<arr[flag]<<"  ";
-                arr1[val]=arr[flag];
-                val++;
                 flag++;
             }
             else{
-                cout<<arr1[flag1]<<"  ";
+                cout<<arr[flag1]<<"  ";
                 flag1++;
             }
         }
