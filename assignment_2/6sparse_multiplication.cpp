@@ -1,83 +1,86 @@
 #include <iostream>
 using namespace std;
 
-int main() {
-    int rows, cols;
-    cout << "Enter the number of rows and columns for the matrices: ";
-    cin >> rows >> cols;
-    int val1, val2;
-    cout << "Enter the number of non-zero values for the first matrix: ";
-    cin >> val1;
-    cout << "Enter the number of non-zero values for the second matrix: ";
-    cin >> val2;
-    int A[3][val1];
-    int B[3][val2];
-    int C[3][val1 + val2];
-    int C_count = 0;
-    cout << "Enter the non-zero values for the first matrix (row, column, value):" << endl;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < val1; j++) {
-            cin >> A[i][j];
+struct Triplet
+{
+    int row, col, val;
+};
+
+int main()
+{
+    int r1, c1, r2, c2;
+    cout << "Enter rows and cols of first matrix: ";
+    cin >> r1 >> c1;
+    cout << "Enter rows and cols of second matrix: ";
+    cin >> r2 >> c2;
+
+    if (c1 != r2)
+    {
+        cout << "Matrix multiplication not possible";
+        return 0;
+    }
+
+    int n1, n2;
+    cout << "Enter number of non-zero values in first matrix: ";
+    cin >> n1;
+    Triplet A[n1];
+    cout << "Enter row col value for first matrix:" << endl;
+    for (int i = 0; i < n1; i++)
+        cin >> A[i].row >> A[i].col >> A[i].val;
+
+    cout << "Enter number of non-zero values in second matrix: ";
+    cin >> n2;
+    Triplet B[n2];
+    cout << "Enter row col value for second matrix:" << endl;
+    for (int i = 0; i < n2; i++)
+        cin >> B[i].row >> B[i].col >> B[i].val;
+
+    int result[r1][c2];
+    for (int i = 0; i < r1; i++)
+        for (int j = 0; j < c2; j++)
+            result[i][j] = 0;
+
+    for (int i = 0; i < n1; i++)
+    {
+        for (int j = 0; j < n2; j++)
+        {
+            if (A[i].col == B[j].row)
+                result[A[i].row][B[j].col] += A[i].val * B[j].val;
         }
     }
-    cout << "Enter the non-zero values for the second matrix (row, column, value):" << endl;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < val2; j++) {
-            cin >> B[i][j];
-        }
-    }
-    int i = 0, j = 0;
-    while (i < val1 && j < val2) {
-        if (A[0][i] < B[0][j]) {
-            C[0][C_count] = A[0][i];
-            C[1][C_count] = A[1][i];
-            C[2][C_count] = A[2][i];
-            i++;
-        } else if (B[0][j] < A[0][i]) {
-            C[0][C_count] = B[0][j];
-            C[1][C_count] = B[1][j];
-            C[2][C_count] = B[2][j];
-            j++;
-        } else {
-            if (A[1][i] < B[1][j]) {
-                C[0][C_count] = A[0][i];
-                C[1][C_count] = A[1][i];
-                C[2][C_count] = A[2][i];
-                i++;
-            } else if (B[1][j] < A[1][i]) {
-                C[0][C_count] = B[0][j];
-                C[1][C_count] = B[1][j];
-                C[2][C_count] = B[2][j];
-                j++;
-            } else {
-                C[0][C_count] = A[0][i];
-                C[1][C_count] = A[1][i];
-                C[2][C_count] = A[2][i] + B[2][j];
-                i++;
-                j++;
+
+    int count = 0;
+    for (int i = 0; i < r1; i++)
+        for (int j = 0; j < c2; j++)
+            if (result[i][j] != 0)
+                count++;
+
+    Triplet C[count];
+    int k = 0;
+    for (int i = 0; i < r1; i++)
+    {
+        for (int j = 0; j < c2; j++)
+        {
+            if (result[i][j] != 0)
+            {
+                C[k].row = i;
+                C[k].col = j;
+                C[k].val = result[i][j];
+                k++;
             }
         }
-        C_count++;
     }
-    while (i < val1) {
-        C[0][C_count] = A[0][i];
-        C[1][C_count] = A[1][i];
-        C[2][C_count] = A[2][i];
-        i++;
-        C_count++;
-    }
-    while (j < val2) {
-        C[0][C_count] = B[0][j];
-        C[1][C_count] = B[1][j];
-        C[2][C_count] = B[2][j];
-        j++;
-        C_count++;
-    }
-    cout << "Resultant Sparse Matrix (Row, Column, Value):" << endl;
-    for (int k = 0; k < C_count; k++) {
-        if (C[2][k] != 0) {
-            cout << C[0][k] << " " << C[1][k] << " " << C[2][k] << endl;
-        }
+
+    cout << "Result in Triplet form:" << endl;
+    for (int i = 0; i < count; i++)
+        cout << C[i].row << " " << C[i].col << " " << C[i].val << endl;
+
+    cout << "Resultant Matrix:" << endl;
+    for (int i = 0; i < r1; i++)
+    {
+        for (int j = 0; j < c2; j++)
+            cout << result[i][j] << " ";
+        cout << endl;
     }
     return 0;
 }
