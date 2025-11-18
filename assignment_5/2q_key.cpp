@@ -15,7 +15,7 @@ void display()
     {
         cout << temp->data << "|" << temp->next << "->";
         temp = temp->next;
-    }
+    }   
     cout<<endl;
 }
 void count()

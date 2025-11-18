@@ -6,7 +6,6 @@ struct node
     int data;
     node *next;
 };
-
 struct LinkedList
 {
     node *head;
@@ -58,7 +57,6 @@ struct LinkedList
         head = prev;
     }
 };
-
 int main()
 {
     LinkedList ob;
