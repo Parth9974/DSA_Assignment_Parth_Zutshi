@@ -1,7 +1,8 @@
 #include <iostream>
 #include <random>
 using namespace std;
-
+// using random library so that it choosed one out of 2 wether the linked list be circular or not so it has 2 function and it can implement either of them
+// not working
 class node{
     public:
     int data;
